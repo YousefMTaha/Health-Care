@@ -33,7 +33,7 @@ async function sendEmail({ to, cc, bcc, subject, html, attachments = [] } = {}) 
 
 
 export const html = (message, code) => {
-    console.log({message, code});
+    // console.log({message, code});
     return `  
     <p 
     style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #000000; text-decoration: none; color: #000000;

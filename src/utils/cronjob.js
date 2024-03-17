@@ -3,7 +3,7 @@ import reservationModel from "../../DB/models/Reservation.model.js";
 
 export const checkPaymentStatus = () => {
     schedule.scheduleJob(
-      '*/5 * * * *',
+      '*/30 * * * *',
       async function () {
         const currentDate = new Date();
         const pendingReservations = await reservationModel.find({ status: 'pending' });

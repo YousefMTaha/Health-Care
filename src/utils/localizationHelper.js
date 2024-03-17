@@ -107,13 +107,18 @@ export const allMessages = {
     RESERVATION_CONFIRM: "Reservation confirmed successfully",
     RESERVATION_CANCEL_BEFORE: "Reservation already canceled before",
     RESERVATION_CONFIRM_BEFORE: "Reservation already confirmed before",
-    RESERVATION_TIMES_ERROR: "Cannot add an appointment on the same day or before",
+    RESERVATION_TIMES_ERROR:
+      "Cannot add an appointment on the same day or before",
     RESERVATION_CANCEL_ERROR: "Cannot cancel after the session start",
-    RESERVATION_CANCEL_UNAUTHORIZED: "You are not allowed to cancel the session now",
+    RESERVATION_CANCEL_UNAUTHORIZED:
+      "You are not allowed to cancel the session now",
     RESERVATION_BEFORE: "Look like you are reservation before",
     RESERVATION_DELETE: "Reservation deleted successfully",
-    RESERVATION_DELETE_ERROR: "You cannot delete the reservation, it must be available",
+    RESERVATION_DELETE_ERROR:
+      "You cannot delete the reservation, it must be available",
     RESERVATION_BAD_REQ: "Check the time you entered",
+    RESERVATION_ERROR: "Can't reservation after session",
+
     //Send code
     CODE_SENT: "Code Sent, please Check Your inbox!",
     INVALID_CODE_EXPIRE:
@@ -242,6 +247,7 @@ export const allMessages = {
     RESERVATION_DELETE: "تم حذف الحجز بنجاح",
     RESERVATION_DELETE_ERROR: "لا يمكنك حذف الحجز يجب ان يكون متاح",
     RESERVATION_BAD_REQ: "افحص الوقت الذي ادخلتة",
+    RESERVATION_ERROR: "لا يمكن الحجز بعد الجلسة",
     //Send code
     CODE_SENT: "تم إرسال الرمز، يرجى التحقق من صندوق الوارد الخاص بك!",
     INVALID_CODE_EXPIRE:

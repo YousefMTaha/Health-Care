@@ -9,8 +9,11 @@ async function payment({
   discounts = [],
   line_items = [],
 } = {}) {
+  const fiveMinutesFromNow = new Date();
+  fiveMinutesFromNow.setMinutes(fiveMinutesFromNow.getMinutes() + 30);
+
   const session = await stripe.checkout.sessions.create({
-    expires_at: 5,
+    expires_at: Math.floor(fiveMinutesFromNow.getTime() / 1000), // Convert milliseconds to seconds
     payment_method_types,
     mode,
     customer_email,

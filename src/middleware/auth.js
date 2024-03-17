@@ -57,7 +57,7 @@ export const auth = (roles = []) => {
       user = await doctorModel.findById(decoded.id);
       userRole = Roles.doctor
     }
-    if (decoded.role == Roles.user) {
+    if (decoded.role == Roles.Patient) {
       user = await patientModel.findById(decoded.id);
       userRole = Roles.Patient
     }

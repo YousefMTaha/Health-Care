@@ -18,8 +18,8 @@ export const refund = async (reservationId) => {
     };
   } catch (error) {
     return {
-      message: allMessages.en.REFUND_FAILED,
-      errMessage: error.message,
+      // message: allMessages.en.REFUND_FAILED,
+      message: error.message,
       success: false,
     };
   }

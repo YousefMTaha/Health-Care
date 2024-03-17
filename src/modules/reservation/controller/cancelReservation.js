@@ -4,6 +4,7 @@ import { asyncErrorHandler } from "../../../utils/errorHandling.js";
 import { allMessages } from "../../../utils/localizationHelper.js";
 import reservationModel from "../../../../DB/models/Reservation.model.js";
 import doctorModel from "../../../../DB/models/Doctor.model.js";
+import { refund } from "../../../utils/Refund.js";
 /**
  * authorized: Doctor
  * logic: if status cancelled? ✔️ : ❎ Change status of reservation -> status == "cancelled" & delete patient from this reservation
@@ -24,14 +25,14 @@ export const cancelReservationDoctor = asyncErrorHandler(
         )
       );
     }
-    if (reservation.status == "Completed") {
-      return next(
-        new ErrorClass(
-          allMessages[req.query.ln].RESERVATION_COMPLETE,
-          StatusCodes.BAD_REQUEST
-        )
-      );
-    }
+    // if (reservation.status == "confirmed") {
+    //   return next(
+    //     new ErrorClass(
+    //       allMessages[req.query.ln].RESERVATION_COMPLETE,
+    //       StatusCodes.BAD_REQUEST
+    //     )
+    //   );
+    // }
     // push to rejected and pull from confirm
     await doctorModel.findOneAndUpdate(
       { _id: reservation.doctorId },
@@ -51,6 +52,17 @@ export const cancelReservationDoctor = asyncErrorHandler(
         patientId: null,
       }
     );
+
+    if (reservation.paymentMethod == "card") {
+      // let refundErrMsg;
+      const refundOperation = await refund(reservationId);
+      return res.status(StatusCodes.ACCEPTED).json({
+        message: allMessages[req.query.ln].RESERVATION_CANCEL,
+        refundMsg: refundOperation.message,
+        reservation,
+      });
+    }
+
     return res.status(StatusCodes.ACCEPTED).json({
       message: allMessages[req.query.ln].RESERVATION_CANCEL,
       reservation,
@@ -105,7 +117,10 @@ export const cancelReservationPatient = asyncErrorHandler(
         )
       );
     }
-    if (reservation.status.toString() != "confirmed") {
+    if (
+      reservation.status.toString() != "confirmed" &&
+      reservation.paymentMethod == "cash"
+    ) {
       //Can change status of reservation -> status == "available"
       await reservationModel.updateOne(
         { _id: req.params.reservationId },
@@ -178,8 +193,23 @@ export const cancelReservationPatient = asyncErrorHandler(
       },
       { new: true }
     );
+
+    console.log(reservation);
+    if (reservation.paymentMethod == "card") {
+      console.log("refund");
+      // let refundErrMsg;
+      const refundOperation = await refund(req.params.reservationId);
+
+      return res.status(StatusCodes.ACCEPTED).json({
+        message: allMessages[req.query.ln].RESERVATION_CANCEL,
+        refundMsg: refundOperation.message,
+        reservation,
+      });
+    }
+
     return res.status(StatusCodes.ACCEPTED).json({
       message: allMessages[req.query.ln].RESERVATION_CANCEL,
+      // test: "test",
     });
   }
 );

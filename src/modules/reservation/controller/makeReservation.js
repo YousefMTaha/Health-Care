@@ -41,6 +41,28 @@ const makeReservation = asyncErrorHandler(async (req, res, next) => {
   }
   reservation.patientId = req.user._id;
   reservation.paymentMethod = req.body.paymentMethod;
+
+  let from = Number(reservation.appointmentSeasion.from) - 2;
+  let sessionFrom;
+  from == -1? (sessionFrom = 23): from == -2? (sessionFrom = 24): from == 0? (sessionFrom = 0): (sessionFrom = from);
+  // Session from get hours
+  const hours = Math.floor(sessionFrom);
+  // Session from get min
+  const min = (sessionFrom - Math.floor(sessionFrom)) * 60;
+  // Session time with from Session appointment
+  let reservationDate = new Date(reservation.time);
+  reservationDate.setHours(reservationDate.getHours() + hours);
+  reservationDate.setMinutes(min);
+  // check time now > Session appointment
+  if (new Date() > reservationDate) {
+    return next(
+      new ErrorClass(
+        allMessages[req.query.ln].RESERVATION_ERROR,
+        StatusCodes.BAD_REQUEST
+      )
+    );
+  }
+
   //check if method visa => pending or cash => waiting until doctor confirm
   if (req.body.paymentMethod.toString() == "card") {
     //status go to waiting
@@ -73,9 +95,7 @@ const makeReservation = asyncErrorHandler(async (req, res, next) => {
     });
     reservation.status = "pending";
     await reservation.save();
-    return res
-      .status(201)
-      .json({ message: "Done", url: session.url, reservation });
+    return res.status(201).json({ message: "Done", url: session.url });
   }
   // cash
   reservation.status = "waiting";

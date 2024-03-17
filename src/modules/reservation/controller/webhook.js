@@ -23,7 +23,7 @@ const webhook = asyncErrorHandler(async (req, res, next) => {
           _id: reservationId,
         },
         {
-          // status: "waiting",
+          status: "waiting",
           paymentId: paymentId,
         }
       );
@@ -35,6 +35,9 @@ const webhook = asyncErrorHandler(async (req, res, next) => {
           },
         }
       );
+
+      return res.status(200).json({ message: "done" });
+
       break;
     case "charge.refunded":
       const refundObject = event.data.object;
@@ -54,6 +57,8 @@ const webhook = asyncErrorHandler(async (req, res, next) => {
           }
         );
       }
+      return res.status(200).json({ message: "done" });
+
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);
