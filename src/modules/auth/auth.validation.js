@@ -18,7 +18,7 @@ const signupPatient = {
       cPassword: joi.string().valid(joi.ref("password")).required(),
       phone: generalFields.phone.required(),
       OTP: generalFields.code.required(),
-      hashOTP: joi.string().required(),
+      token: joi.string().required(),
     })
     .required(),
   params: joi
