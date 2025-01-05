@@ -42,7 +42,7 @@ The backend was developed using the following technologies: Express.JS, MongoDB
 | **Categories** | Allows admins to create and manage categories, helping patients find doctors with the right expertise.                   |
 | **Reservations** | Manages appointment bookings, generating a calendar of available times for patients to choose from.                     |
 | **Reviews**  | Facilitates the exchange of feedback between patients and doctors, helping others make informed healthcare decisions.    |
-| **Chat**     | Provides real-time communication between patients and doctors, supporting inquiries, feedback, and appointment scheduling. |
+| **Chat**     | Provides communication between patients and doctors, supporting inquiries, feedback, and appointment scheduling. |
 
 ## License
 
